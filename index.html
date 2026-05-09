@@ -32,6 +32,8 @@
 
 html, body {
   width: 100%; height: 100%;
+  /* dvh = dynamic viewport height: excludes mobile browser toolbar */
+  min-height: 100dvh;
   background: var(--c-bg);
   color: var(--c-text);
   font-family: var(--font-pixel);
@@ -39,6 +41,7 @@ html, body {
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  touch-action: none;   /* prevent scroll/zoom gestures during gameplay */
 }
 
 #app {
@@ -201,8 +204,16 @@ html, body {
 .lb-empty { text-align: center; color: var(--c-text-dim); padding: 20px; font-size: 8px; }
 
 /* ── Game ── */
-#screen-game { background: #000; overflow: hidden; }
-#game-canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+#screen-game {
+  background: #000; overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#game-canvas {
+  display: block; flex-shrink: 0;
+  image-rendering: pixelated; image-rendering: crisp-edges;
+}
 
 /* ── HUD ── */
 #hud {
@@ -222,23 +233,28 @@ html, body {
 
 /* ── Touch controls ── */
 #touch-controls {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 100px;
-  display: none; justify-content: space-between; align-items: flex-end;
-  padding: 0 8px 8px; z-index: 10; pointer-events: none;
+  width: 100%; height: 130px; flex-shrink: 0;
+  display: none; justify-content: space-between; align-items: center;
+  padding: 0 12px; gap: 8px; z-index: 10;
+  background: rgba(0,0,0,0.6);
 }
 #touch-controls.visible { display: flex; }
 .touch-btn {
   pointer-events: all; border: 2px solid var(--c-border);
-  background: rgba(0,0,30,0.7); color: var(--c-accent);
+  background: rgba(0,0,30,0.8); color: var(--c-accent);
   font-family: var(--font-pixel); font-size: 10px; cursor: pointer;
-  border-radius: 4px; transition: background 0.1s, border-color 0.1s;
+  border-radius: 8px; transition: background 0.08s, border-color 0.08s;
   -webkit-tap-highlight-color: transparent;
   display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.touch-move  { width: 72px; height: 72px; font-size: 22px; }
-.touch-shoot { width: 64px; height: 64px; font-size: 8px; }
-.touch-pause { width: 48px; height: 48px; position: absolute; top: -56px; right: 8px; font-size: 14px; }
-.touch-btn:active { background: rgba(0,255,204,0.2); border-color: var(--c-accent); }
+.touch-move  { width: 96px; height: 96px; font-size: 28px; }
+.touch-shoot { width: 84px; height: 84px; font-size: 9px;
+               color: var(--c-accent2); border-color: var(--c-accent2);
+               background: rgba(30,0,10,0.8); }
+.touch-pause { width: 52px; height: 52px; font-size: 14px; }
+.touch-btn:active { background: rgba(0,255,204,0.25); border-color: var(--c-accent); }
+.touch-shoot:active { background: rgba(255,68,102,0.35); border-color: var(--c-accent2); }
 
 /* ── Overlay boxes ── */
 .overlay-box {
@@ -489,8 +505,8 @@ const CFG = Object.freeze({
 
   /* ── Canvas / Rendering ── */
   CANVAS: {
-    BASE_WIDTH:  800,
-    BASE_HEIGHT: 600,
+    BASE_WIDTH:  960,
+    BASE_HEIGHT: 720,
     HUD_HEIGHT:  40,
     BG_COLOR:    '#000010',
     STAR_COUNT:  80,
@@ -968,8 +984,7 @@ class InputManager {
     this._gpPrev   = {};
     this._gpAxesPrev = {};
 
-    this._volPrev  = null;
-    this._volAudio = null;
+    this._volKeysReady = false;
 
     this._bindKeyboard();
     this._bindTouch();
@@ -1076,23 +1091,34 @@ class InputManager {
   }
 
   _setupVolumeKeys() {
-    if (this._volAudio) return;
-    const a = new Audio();
-    a.src  = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
-    a.loop   = true;
-    a.volume = 0.5;
-    a.muted  = false;
-    a.play().catch(() => {});
-    this._volPrev  = a.volume;
-    this._volAudio = a;
-    a.addEventListener('volumechange', () => {
+    if (this._volKeysReady) return;
+    this._volKeysReady = true;
+
+    /* Android Chrome exposes hardware volume buttons as AudioVolumeUp/Down.
+       Must listen on document (not window) and be non-passive to call preventDefault. */
+    const isUp   = e => e.key === 'AudioVolumeUp'   || e.code === 'AudioVolumeUp';
+    const isDown = e => e.key === 'AudioVolumeDown'  || e.code === 'AudioVolumeDown';
+
+    document.addEventListener('keydown', e => {
       if (this._mode !== 'volume-keys') return;
-      const now = a.volume;
-      if (now > this._volPrev) this._touchLeft  = true;
-      if (now < this._volPrev) this._touchRight = true;
-      this._volPrev = now;
-      setTimeout(() => { this._touchLeft = false; this._touchRight = false; }, 200);
-    });
+      if (isUp(e)) {
+        e.preventDefault();
+        this._touchLeft  = true;
+        this._touchShoot = true;
+        setTimeout(() => { this._touchLeft = false; this._touchShoot = false; }, 200);
+      }
+      if (isDown(e)) {
+        e.preventDefault();
+        this._touchRight = true;
+        setTimeout(() => { this._touchRight = false; }, 200);
+      }
+    }, { passive: false });
+
+    document.addEventListener('keyup', e => {
+      if (this._mode !== 'volume-keys') return;
+      if (isUp(e))   { this._touchLeft = false;  this._touchShoot = false; }
+      if (isDown(e)) { this._touchRight = false; }
+    }, { passive: false });
   }
 
   update() {
@@ -1919,6 +1945,7 @@ class GameManager {
     this._formDir  = 1;
     this._formSpeed= 0;
     this._formDropPending = false;
+    this._bottomPad = 0;
 
     this._hudLives   = document.getElementById('hud-lives-val');
     this._hudScore   = document.getElementById('hud-score-val');
@@ -1971,21 +1998,29 @@ class GameManager {
   }
 
   _resize() {
-    const wrap  = document.getElementById('screen-game');
-    const ww    = wrap.clientWidth  || window.innerWidth;
-    const wh    = wrap.clientHeight || window.innerHeight;
+    const ww     = window.innerWidth;
+    const wh     = window.innerHeight;
+    const mode   = this.input ? this.input._mode : 'keyboard';
+    const touchH = (mode === 'touch' || mode === 'volume-keys') ? 130 : 0;
+    const availH = wh - touchH;
+
     const BASE_W = CFG.CANVAS.BASE_WIDTH;
     const BASE_H = CFG.CANVAS.BASE_HEIGHT;
-    const scale  = Math.min(ww / BASE_W, wh / BASE_H);
-    const cw     = Math.floor(BASE_W * scale);
-    const ch     = Math.floor(BASE_H * scale);
-    this.canvas.width  = cw;
-    this.canvas.height = ch;
-    this.canvas.style.width  = cw + 'px';
-    this.canvas.style.height = ch + 'px';
-    this._scale  = scale;
-    this._cw     = cw;
-    this._ch     = ch;
+    const scale  = Math.min(ww / BASE_W, availH / BASE_H);
+    const dispW  = Math.floor(BASE_W * scale);
+    const dispH  = Math.floor(BASE_H * scale);
+
+    /* Canvas logical size stays at BASE dimensions so all game coordinates
+       remain in 800×600 space. CSS scales the element down to fit the screen. */
+    this.canvas.width       = BASE_W;
+    this.canvas.height      = BASE_H;
+    this.canvas.style.width  = dispW + 'px';
+    this.canvas.style.height = dispH + 'px';
+
+    this._scale     = scale;
+    this._cw        = BASE_W;
+    this._ch        = BASE_H;
+    this._bottomPad = 0;
   }
 
   _spawnWave() {
@@ -2002,26 +2037,35 @@ class GameManager {
     this._formDir   = 1;
     this._formDropPending = false;
 
-    /* Scale column spacing so enemies fit the canvas */
-    const usableW  = this._cw - fCfg.MARGIN_SIDE * 2;
+    /* Scale column and row spacing to fit the canvas on any screen size */
+    const usableW    = this._cw - fCfg.MARGIN_SIDE * 2;
     const colSpacing = Math.min(fCfg.COL_SPACING, Math.floor(usableW / cols));
+
+    /* Reserve space for HUD at top and player + shields at bottom (all in 800×600 logical space) */
+    const topMargin  = fCfg.TOP_MARGIN;
+    const maxGridH   = this._ch - topMargin - 180;
+    const rowSpacing = rows > 1
+      ? Math.min(fCfg.ROW_SPACING, Math.floor(maxGridH / rows))
+      : fCfg.ROW_SPACING;
 
     this.enemies = [];
     for (let r = 0; r < rows; r++) {
       const type = rowTypes[Math.min(r, rowTypes.length - 1)];
       for (let c = 0; c < cols; c++) {
         const ex = fCfg.MARGIN_SIDE + colSpacing * c + colSpacing / 2;
-        const ey = fCfg.TOP_MARGIN  + fCfg.ROW_SPACING * r + fCfg.ROW_SPACING / 2;
+        const ey = topMargin + rowSpacing * r + rowSpacing / 2;
         this.enemies.push(new Enemy(ex, ey, type, shootMul));
       }
     }
 
+    const effectiveH = this._ch - (this._bottomPad || 0);
     if (!this.player) {
-      this.player = new Player(this._cw, this._ch);
+      this.player = new Player(this._cw, effectiveH);
     } else {
       this.player._canvasW = this._cw;
-      this.player._canvasH = this._ch;
+      this.player._canvasH = effectiveH;
       this.player.x = this._cw / 2;
+      this.player.y = effectiveH - this.player.h / 2 - 12;
     }
 
     this._spawnShields();
@@ -2038,7 +2082,7 @@ class GameManager {
     /* Distribute shields evenly across canvas width */
     const totalW   = cols * sc.PX;
     const spacing  = Math.floor(this._cw / (sc.COUNT + 1));
-    const sy       = this._ch - sc.Y_FROM_BTM;
+    const sy       = this._ch - (this._bottomPad || 0) - sc.Y_FROM_BTM;
 
     this.shields = [];
     for (let i = 0; i < sc.COUNT; i++) {
@@ -2300,8 +2344,8 @@ class GameManager {
     if (this.score > this.hiScore) this.hiScore = this.score;
 
     if (bulletOrNull && this._gameScreen) {
-      const sx = bulletOrNull.x * (this._gameScreen.clientWidth  / this._cw);
-      const sy = bulletOrNull.y * (this._gameScreen.clientHeight / this._ch);
+      const sx = bulletOrNull.x * this._scale;
+      const sy = bulletOrNull.y * this._scale;
       this.renderer.spawnScorePopup(this._gameScreen, sx, sy, delta);
     }
   }
