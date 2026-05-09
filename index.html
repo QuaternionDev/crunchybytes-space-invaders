@@ -391,10 +391,9 @@ html, body {
         <div class="setting-row">
           <label data-i18n="settings.controls">Controls</label>
           <div class="btn-group" id="ctrl-group">
-            <button class="btn-toggle" data-ctrl="keyboard"    data-i18n="ctrl.keyboard">Keyboard</button>
-            <button class="btn-toggle" data-ctrl="touch"       data-i18n="ctrl.touch">Touch</button>
-            <button class="btn-toggle" data-ctrl="gamepad"     data-i18n="ctrl.gamepad">Gamepad</button>
-            <button class="btn-toggle" data-ctrl="volume-keys" data-i18n="ctrl.volumeKeys">Vol.Keys</button>
+            <button class="btn-toggle" data-ctrl="keyboard" data-i18n="ctrl.keyboard">Keyboard</button>
+            <button class="btn-toggle" data-ctrl="touch"    data-i18n="ctrl.touch">Touch</button>
+            <button class="btn-toggle" data-ctrl="gamepad"  data-i18n="ctrl.gamepad">Gamepad</button>
           </div>
         </div>
 
@@ -2673,6 +2672,13 @@ class UIManager {
     });
   }
 
+  _setSlider(sliderId, valId, value) {
+    const s = document.getElementById(sliderId);
+    const v = document.getElementById(valId);
+    if (s) s.value = value;
+    if (v) v.textContent = value + '%';
+  }
+
   _bindControlButtons() {
     document.querySelectorAll('[data-ctrl]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -2683,13 +2689,6 @@ class UIManager {
         this.audio.onMenuClick();
       });
     });
-  }
-
-  _setSlider(sliderId, valId, value) {
-    const s = document.getElementById(sliderId);
-    const v = document.getElementById(valId);
-    if (s) s.value = value;
-    if (v) v.textContent = value + '%';
   }
 
   _on(id, event, handler) {
