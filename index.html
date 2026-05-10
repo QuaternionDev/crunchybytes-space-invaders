@@ -628,7 +628,7 @@ const CFG = Object.freeze({
       waveSpeedInc:   0.05,
     },
     medium: {
-      rowTypes:       ['A','B','C','C'],
+      rowTypes:       ['B','C','C','C'],
       spawnRows:      4,
       spawnCols:      8,
       enemySpeedMul:  1.2,
@@ -1404,13 +1404,17 @@ class Enemy {
 
   canShoot() { return this._shootTimer <= 0; }
 
-  shoot(playerX, playerY) {
+  shoot(playerX, playerY, playerVx = 0) {
     this._shootTimer = this._nextShootDelay(this._diffMul);
     let vx = 0;
     let vy = this.cfg.BULLET_SPEED;
 
     if (this.type === 'B') {
-      const dx  = playerX - this.x;
+      /* Lead the player: estimate travel time then aim at predicted position */
+      const dist = Math.hypot(playerX - this.x, playerY - this.y);
+      const travelTime = dist / this.cfg.BULLET_SPEED;
+      const leadX = playerX + playerVx * travelTime * this.cfg.LEAD_FACTOR;
+      const dx  = leadX - this.x;
       const dy  = playerY - this.y;
       const acc = this.cfg.AIM_ACCURACY;
       const aimAngle = Math.atan2(dy, dx);
@@ -2163,7 +2167,8 @@ class GameManager {
       livingEnemies++;
       e.update(dt, this.player.x, this.player.y, this._cw);
       if (e.canShoot()) {
-        const b = e.shoot(this.player.x, this.player.y);
+        const playerVx = (this.input.right ? 1 : 0) - (this.input.left ? 1 : 0);
+        const b = e.shoot(this.player.x, this.player.y, playerVx * CFG.PLAYER.SPEED);
         this.bullets.push(b);
         if (e.type === 'A')      this.audio.onDigitShoot();
         else if (e.type === 'B') this.audio.onWiseShoot();
