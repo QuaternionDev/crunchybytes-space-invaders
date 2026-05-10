@@ -1,5 +1,5 @@
 <p align="center">
-<img src="logo.png" alt="DigiWise Invaders logo" width="500"/>
+<img src="Logo.png" alt="DigiWise Invaders logo" width="500"/>
 </p>
 
 
