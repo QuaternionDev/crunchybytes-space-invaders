@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -542,12 +542,12 @@ const CFG = Object.freeze({
     SCORE_KILL:      25,
     WIDTH:           40,
     HEIGHT:          36,
-    COLOR:           '#ff9900',
-    COLOR_DARK:      '#993300',
+    COLOR:           '#4488ff',
+    COLOR_DARK:      '#002299',
     BULLET_SPEED:    250,
     BULLET_W:        5,
     BULLET_H:        12,
-    BULLET_COLOR:    '#ff6600',
+    BULLET_COLOR:    '#66aaff',
     SHOOT_MIN:       0.8,
     SHOOT_MAX:       2.5,
     AIM_ACCURACY:    0.0,
@@ -560,12 +560,12 @@ const CFG = Object.freeze({
     SCORE_KILL:      25,
     WIDTH:           44,
     HEIGHT:          38,
-    COLOR:           '#aa44ff',
-    COLOR_DARK:      '#550088',
+    COLOR:           '#ff3322',
+    COLOR_DARK:      '#880011',
     BULLET_SPEED:    220,
     BULLET_W:        6,
     BULLET_H:        14,
-    BULLET_COLOR:    '#cc66ff',
+    BULLET_COLOR:    '#ff6655',
     SHOOT_MIN:       2.0,
     SHOOT_MAX:       5.0,
     AIM_ACCURACY:    0.85,
@@ -666,8 +666,8 @@ const CFG = Object.freeze({
   /* ── Asset paths ── */
   TEXTURES: {
     PLAYER:       'Textures/player.png',
-    ENEMY_A:      'Textures/enemy_a.png',
-    ENEMY_B:      'Textures/enemy_b.png',
+    ENEMY_A:      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAYAAAA8AXHiAAAFXUlEQVR4AeyYoY5kVRCGz6AQgAIzBrEEzWoMFkKCIjwEZA1+yI4kwQAOtQ5LwgOsAEl4AVYgmITsKpYEOeSa3u3c7p7/3j51qm7VN0klPbfPrVP1/Z/qVxp/EDAggFgGUGnZGmJhgQkBxDLBSlPEwgETAohlgpWmiFXFgcF7ItZg4FWuQ6wqSQ/eE7EGA69yHWIdSfr2n3ar1JHXyz9GrPIK2ABALBuu5bsilpsCuS9GrNz5um2HWG7oc1+MWLnzddsOsdzQ574YsXLn67YdYrmhz30xYr3Id+/TG58+akrtvcQ/OwKItUPBh54EEKsnTXrtCCDWDgUfehJArJ406bUjgFg7FHzoSQCxetKk145AaLF2U/JhcwQQa3ORbWNgxNpGTpubErGORPb6H0+aUkdeL/8YscorYAMAsWy4lu+KWOUVsAGwTCybGeiakABiJQw1wkqIFSGFhDMgVsJQI6yEWBFSSDgDYiUMNcJK4cW6vHd161FqOB6zTXeq8608d/Zr4cU6e0MauBBALBfs+S9FrPwZu2yIWC7Y81+KWPkzdtkQsVyw578UsTaS8dbGRKytJbaReRFrI0FtbUw3saZfj5W6efBFC13fPGw3DqWwm854CekmltfC3DuGAGKN4VzuFsQqF/mYhRFrLWfeO0kAsU7i4cu1BBBrLTneO0kAsU7i4cu1BBBrLTneO0kAsU7i4cu1BNzEev7OvabU2sWOvvf2W631rKMX7X/xwZut9az97vH+cxOrPwo6RiKAWJHSSDQLYiUKM9IqiBUpjUSzIFaiMCOtgliR0kg0C2IlCjPSKpZiRdqTWQYTQKzBwKtc112si89+uFXq+UcfNqXkINRf0+WG2kH113Stm37q3UcPm1JKFtMZ/WbtZHextGs5lZ0AYmVP2Gk/xHICn/1axMqe8Ij9DtyBWAeg8Oh8Aoh1PkM6HCCAWAeg8Oh8Aoh1PkM6HCCAWAeg8Oh8At3Feu+X/5pS54++3+HfT66bUvtvjfvv5/evm1K9J1KymM70vre7WL0HpN8aAv7vIJZ/BiknQKyUsfovhVj+GaScALFSxuq/FGL5Z5ByAsRKGav/Uog1JoNytyBWucjHLJxGrNd+umpKjcE6v+XjX6+aUvM3Dz95/NvTptTht+2fphHLHhU3LCGAWEtocVYmgFgyKg4uIYBYS2hxViZQViyZEAdXEUCsVdh46S4CiHUXIb5fRQCxVmHjpbsIINZdhPh+FYHuYv3+14MLpe5//WNTSt7qz6etKSU31A4+ftZa1xJ/UVfYTWeULKYz2rb6qe5i6VdzMjOBOGJlplxwN8QqGPqIlRFrBOWCdyBWwdBHrIxYIygXvAOxCoY+YmXEGkG54B0nxCpIg5W7EQgv1uW33zelpl+Zpfr8u3ZfqMsvv2pKKb2WnFF2nc50M8CoUXixjPamrTEBxDIGXLU9YlVN3nhvxDIGXLU9YlVN/qW9LT4ilgVVejbEQgITAohlgpWmiIUDJgTcxPr71WdNqZsn1xdKKb2WnFHunM4s6amcnXoqpfSazphYIzR1E0uYjSMbJoBYEcNLMBNiJQgx4gqIFTGVBDMhVoIQI66AWBFTSTATYiUIMeIKiBUxlQQzIZYUIoeWEnATS/l1eTqjLjSd7VlZ7lX36H3OTazei9AvFgHEipVHmmkQK02UsRZBrFh5pJkGsdJEGWuRrYoViyLTzAgg1gwJD3oQQKweFOkxI4BYMyQ86EEAsXpQpMeMAGLNkPCgBwHE6kGRHjMC3cSadeZBaQKIVTp+u+URy45t6c6IVTp+u+URy45t6c6IVTp+u+URy45t0s7aWv8DAAD///6qGMAAAAAGSURBVAMAn7hDaXc28A4AAAAASUVORK5CYII=',
+    ENEMY_B:      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAYAAAA8AXHiAAAFL0lEQVR4AeyasWpUURCGz9qkMGIhdgGRFFkESSeoaGMTn0R8B3tbX8JnsEqjaCCNpJG1sBDSBYtgmjSuXBK4BJbL3HvnnJkz5xNG191zz8x8/1cteyvxBwIZCCBWBqhcmRJiYUEWAoiVBSuXIhYOZCGAWFmwciliteJA4T0RqzDwVtohVitJF94TsQoDb6UdYrWSdOE9Easw8FbaIVYrSRfeE7EKA+/bxX6FWLHzNdsOsczQx26MWLHzNdsOsczQx26MWLHzNdsOsczQx26MWH2+vFIkgFiKMLmqJ4BYPQteKRJALEWYXNUTQKyeBa8UCSCWIkyu6gkgVs+CV4oEXIuluCdXFSaAWIWBt9IOsVpJuvCeiFUYeCvtEKuVpAvviViFgbfSDrFaSbrwnuPEKjwc7eolgFj1Zud6csRyHU+9wyFWvdm5nhyxXMdT73CIVW92rid3L9bFqydrSX1bLtea9WlnZ+25Mls1+3r3Ys3ekAtMCCCWCfb4TRErfsYmGyKWCfb4TRErfsYmGyKWCfb4TRGrkoxrGxOxakusknkRq5KgahszjFh3V6skqadf7iVJHbw7TaL6eJYOBFWbGHPnDSPWXBA8r0sAsXR5cts1AcS6BsE/ugQQaypPnhskgFiDePhwKgHEmkqO5wYJINYgHj6cSgCxppLjuUECiDWIhw+nElAXS/L79DFnfh8eJ0lJAfy4/zVJ6ujDMonqzcN0JKi729tJUtI9tH+PL+0rPaculrSx/jlu9EQAsTylEWgWxAoUpqdVEMtTGoFmQaxAYXpaBbE8pRFoFsQKFKanVXKK5WlPZilMALEKA2+lnZlYkm/TuzOPzp4nSWkHJvn9fHdGu+/B9wdJUtp9te8zE0t7Ee7zRQCxfOURZhrEChOlr0UQy1cedU6zYWrE2gCFt+YTQKz5DLlhAwHE2gCFt+YTQKz5DLlhAwHE2gCFt+YTcC+W5Pfp3Znz5TJZ1PwIbt5w9OJPktTNp/z9z71Y/pDVMJH9jIhln0HICRArZKz2SyGWfQYhJ0CskLHaL4VY9hmEnACxQsZqvxRilcmguS6I1VzkZRYOI9adra0kqTJY6RJGLKL0RQCxfOURZhrEChOlr0UQy1ceYaZpVqwwCTpdBLGcBlP7WIhVe4JO50csp8HUPhZi1Z6g0/ndi/Vvfz9J6u/lZZKUNIfzi4vkuaR7WJ1zL5YVGPrOI+BHrHl78LQzAojlLJAo4yBWlCSd7YFYzgKJMg5iRUnS2R6I5SyQKOMgVpQkne0xIJazSRmnKgLqYm0fHi8k9XZvN0nq8cnJQlLPVquFpKTfpr8+PV1ISpq25K4xZ97f3kqSkt4p3UN6Tl0saWPOxSaAWLHzNdsOsczQx26MWLHzNdsOsczQ+2mcYxLEykGVOxNiIUEWAoiVBSuXIhYOZCGgLtbLvd21pLJsI7hU+5to7fsEK4w6IsmiOzPqUsFhdbEEPTnSAAHE8hhygJkQK0CIHldALI+pBJgJsQKE6HEFxPKYSoCZECtAiB5XQCyPqQSYCbFEIXJoLAEzsT7//LWQ1NiFWjkvYdedseJhJpbVwvQtQwCxynBurgtiNRd5mYURqwzn5rogVnORl1m4VrHK0KHLZAKINRkdDw4RQKwhOnw2mQBiTUbHg0ME1MXqvu2V1NBQfKZHQJJFd0av49VN6mJdXcvfrRNArNYNyLS/mliZ5uPaSgkgVqXBeR8bsbwnVOl8iFVpcN7HRizvCVU6H2JVGpz3sRHLe0Lu5pMN9B8AAP//D+4rRgAAAAZJREFUAwBtDvNawZ9jLgAAAABJRU5ErkJggg==',
     BULLET_P:     'Textures/bullet_player.png',
     BULLET_A:     'Textures/bullet_enemy_a.png',
     BULLET_B:     'Textures/bullet_enemy_b.png',
@@ -1491,7 +1491,7 @@ class TextureCache {
   load(key, src) {
     const img = new Image();
     img.onload  = () => { this._cache[key] = img; };
-    img.onerror = () => {};
+    img.onerror = () => { console.warn('Texture failed:', key); };
     img.src = src;
   }
 
@@ -1592,104 +1592,66 @@ class RendererManager {
 
   drawEnemyA(enemy) {
     const { ctx } = this;
-    const { x, y, w, h, flashing, animFrame } = enemy;
+    const { x, y, w, h, flashing } = enemy;
     const tex = this.textures.get('ENEMY_A');
-
-    if (tex) {
-      if (flashing) { ctx.save(); ctx.globalAlpha = 0.4; }
-      ctx.drawImage(tex, x - w/2, y - h/2, w, h);
-      if (flashing) ctx.restore();
-      return;
-    }
+    const barY = y - h/2 - 6;
 
     ctx.save();
     if (flashing) ctx.globalAlpha = 0.4;
 
-    const px  = 4;
-    const frames = [
-      [
-        [0,1,1,1,1,1,0],
-        [1,1,0,1,0,1,1],
-        [1,1,1,1,1,1,1],
-        [0,1,0,0,0,1,0],
-        [1,0,1,0,1,0,1],
-      ],
-      [
-        [0,1,1,1,1,1,0],
-        [1,1,0,1,0,1,1],
-        [1,1,1,1,1,1,1],
-        [0,1,0,0,0,1,0],
-        [0,1,0,0,0,1,0],
-      ],
-    ];
-    const grid = frames[animFrame];
-    const cols = grid[0].length;
-    const rows = grid.length;
-    const offX = x - (cols * px) / 2;
-    const offY = y - (rows * px) / 2;
-
-    grid.forEach((row, ri) => {
-      row.forEach((cell, ci) => {
+    if (tex) {
+      const s = Math.max(w, h);
+      ctx.drawImage(tex, x - s/2, y - s/2, s, s);
+    } else {
+      const px  = 4;
+      const frames = [
+        [[0,1,1,1,1,1,0],[1,1,0,1,0,1,1],[1,1,1,1,1,1,1],[0,1,0,0,0,1,0],[1,0,1,0,1,0,1]],
+        [[0,1,1,1,1,1,0],[1,1,0,1,0,1,1],[1,1,1,1,1,1,1],[0,1,0,0,0,1,0],[0,1,0,0,0,1,0]],
+      ];
+      const grid = frames[enemy.animFrame];
+      const offX = x - (grid[0].length * px) / 2;
+      const offY = y - (grid.length    * px) / 2;
+      grid.forEach((row, ri) => row.forEach((cell, ci) => {
         if (!cell) return;
         ctx.fillStyle = ri < 2 ? CFG.ENEMY_A.COLOR : CFG.ENEMY_A.COLOR_DARK;
         ctx.fillRect(offX + ci*px, offY + ri*px, px, px);
-      });
-    });
-
-    this._drawHealthBar(ctx, x, offY - 6, enemy.hp, CFG.ENEMY_A.HP, '#ff9900');
+      }));
+    }
 
     ctx.restore();
+    this._drawHealthBar(ctx, x, barY, enemy.hp, CFG.ENEMY_A.HP, CFG.ENEMY_A.COLOR);
   }
 
   drawEnemyB(enemy) {
     const { ctx } = this;
-    const { x, y, w, h, flashing, animFrame } = enemy;
+    const { x, y, w, h, flashing } = enemy;
     const tex = this.textures.get('ENEMY_B');
-
-    if (tex) {
-      if (flashing) { ctx.save(); ctx.globalAlpha = 0.4; }
-      ctx.drawImage(tex, x - w/2, y - h/2, w, h);
-      if (flashing) ctx.restore();
-      return;
-    }
+    const barY = y - h/2 - 6;
 
     ctx.save();
     if (flashing) ctx.globalAlpha = 0.4;
 
-    const px = 4;
-    const frames = [
-      [
-        [0,0,1,1,1,0,0],
-        [0,1,0,1,0,1,0],
-        [1,1,1,1,1,1,1],
-        [1,0,1,0,1,0,1],
-        [0,1,1,1,1,1,0],
-      ],
-      [
-        [0,0,1,1,1,0,0],
-        [0,1,1,1,1,1,0],
-        [1,0,1,1,1,0,1],
-        [1,1,0,1,0,1,1],
-        [0,0,1,1,1,0,0],
-      ],
-    ];
-    const grid = frames[animFrame];
-    const cols = grid[0].length;
-    const rows = grid.length;
-    const offX = x - (cols * px) / 2;
-    const offY = y - (rows * px) / 2;
-
-    grid.forEach((row, ri) => {
-      row.forEach((cell, ci) => {
+    if (tex) {
+      const s = Math.max(w, h);
+      ctx.drawImage(tex, x - s/2, y - s/2, s, s);
+    } else {
+      const px = 4;
+      const frames = [
+        [[0,0,1,1,1,0,0],[0,1,0,1,0,1,0],[1,1,1,1,1,1,1],[1,0,1,0,1,0,1],[0,1,1,1,1,1,0]],
+        [[0,0,1,1,1,0,0],[0,1,1,1,1,1,0],[1,0,1,1,1,0,1],[1,1,0,1,0,1,1],[0,0,1,1,1,0,0]],
+      ];
+      const grid = frames[enemy.animFrame];
+      const offX = x - (grid[0].length * px) / 2;
+      const offY = y - (grid.length    * px) / 2;
+      grid.forEach((row, ri) => row.forEach((cell, ci) => {
         if (!cell) return;
         ctx.fillStyle = ri < 2 ? '#cc88ff' : CFG.ENEMY_B.COLOR_DARK;
         ctx.fillRect(offX + ci*px, offY + ri*px, px, px);
-      });
-    });
-
-    this._drawHealthBar(ctx, x, offY - 6, enemy.hp, CFG.ENEMY_B.HP, '#aa44ff');
+      }));
+    }
 
     ctx.restore();
+    this._drawHealthBar(ctx, x, barY, enemy.hp, CFG.ENEMY_B.HP, CFG.ENEMY_B.COLOR);
   }
 
   _drawHealthBar(ctx, cx, y, hp, maxHp, color) {
